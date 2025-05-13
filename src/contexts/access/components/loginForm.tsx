@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { login } from "../services/authService";
+import { Link } from "react-router-dom";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("test@glucova.com");
@@ -74,9 +75,9 @@ export const LoginForm = () => {
 
       <p className="text-center text-sm mt-2 text-gray-600">
         Don’t have an account?{" "}
-        <a href="#" className="text-blue-600 hover:underline">
+        <Link to="/register" className="text-blue-600 hover:underline">
           Sign up
-        </a>
+        </Link>
       </p>
     </form>
   );

@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { register } from "../services/authService";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 export const RegisterForm = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -38,6 +42,7 @@ export const RegisterForm = () => {
     try {
       const result = await register(form.email, form.password);
       console.log("Usuario registrado:", result);
+      navigate("/login");
     } catch (err: any) {
       setError(err.message || "Error desconocido");
     } finally {
@@ -122,9 +127,9 @@ export const RegisterForm = () => {
 
       <p className="text-center text-sm mt-2 text-gray-600">
         Already have an account?{" "}
-        <a href="/login" className="text-blue-600 hover:underline">
+         <Link to="/login" className="text-blue-600 hover:underline">
           Login
-        </a>
+        </Link>
       </p>
     </form>
   );
