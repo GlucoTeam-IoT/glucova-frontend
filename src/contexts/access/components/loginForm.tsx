@@ -15,7 +15,6 @@ export const LoginForm = () => {
     try {
       const result = await login(email, password);
       console.log("Login exitoso:", result);
-      // Aquí puedes guardar el token, redirigir, etc.
     } catch (err: any) {
       setError(err.message || "Error desconocido");
     } finally {
@@ -31,11 +30,11 @@ export const LoginForm = () => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700">
-          Correo electrónico
+          Email Address
         </label>
         <input
           type="email"
-          className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="mt-1 w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -44,24 +43,41 @@ export const LoginForm = () => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700">
-          Contraseña
+          Password
         </label>
         <input
           type="password"
-          className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="mt-1 w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
 
-      <button
+      <div className="flex items-center justify-between text-sm">
+        <label className="flex items-center gap-2">
+          <input type="checkbox" className="form-checkbox" />
+          <span className="text-gray-700">Remember me</span>
+        </label>
+        <a href="#" className="text-red-600 hover:underline">
+          Forgot Password?
+        </a>
+      </div>
+
+    <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-      >
-        {loading ? "Ingresando..." : "Ingresar"}
+        className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition disabled:bg-gray-400">
+        {loading ? "Ingresando..." : "Login"}
       </button>
+
+
+      <p className="text-center text-sm mt-2 text-gray-600">
+        Don’t have an account?{" "}
+        <a href="#" className="text-blue-600 hover:underline">
+          Sign up
+        </a>
+      </p>
     </form>
   );
 };

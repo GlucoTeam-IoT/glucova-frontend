@@ -2,15 +2,17 @@ import { LoginForm } from "../components/loginForm";
 
 const LoginPage = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-sky-100 to-blue-200 px-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-lg bg-white p-10 rounded-2xl shadow-2xl">
         <div className="mb-6 text-center">
           <img
-            src="/logo.svg" // Cambia a tu logo real o usa un placeholder
+            src="/logo.svg"
             alt="GlucoVA"
-            className="mx-auto h-16 w-auto"
+            className="mx-auto h-12"
           />
-          <h1 className="text-2xl font-bold text-gray-800 mt-4">Iniciar Sesión</h1>
+          <h1 className="text-2xl font-semibold text-blue-900 mt-4">
+            Welcome Back to GlucoVa
+          </h1>
         </div>
 
         <LoginForm />
