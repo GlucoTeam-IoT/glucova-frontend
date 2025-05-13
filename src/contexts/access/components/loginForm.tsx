@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { login } from "../services/authService";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("test@glucova.com");
   const [password, setPassword] = useState("123456");
   const [error, setError] = useState<string | null>(null);
@@ -16,6 +19,7 @@ export const LoginForm = () => {
     try {
       const result = await login(email, password);
       console.log("Login exitoso:", result);
+      navigate("/dashboard");
     } catch (err: any) {
       setError(err.message || "Error desconocido");
     } finally {
