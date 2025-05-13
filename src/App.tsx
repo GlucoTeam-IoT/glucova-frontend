@@ -1,5 +1,5 @@
 import {Routes, Route } from "react-router-dom";
-import LoginPage from "./contexts/access/pages/loginPage";
+import LoginPage from "./contexts/access/pages/LoginPage";
 import RegisterPage from "./contexts/access/pages/RegisterPage";
 
 function App() {
