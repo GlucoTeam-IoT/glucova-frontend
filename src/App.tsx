@@ -4,7 +4,6 @@ import RegisterPage from "./contexts/access/pages/RegisterPage";
 import DashboardPage from "./contexts/records/pages/DashboardPage";
 import AppLayout from "./shared/layout/AppLayout";
 import ProfilePage from "./contexts/access/pages/ProfilePage";
-import HistoryPage from "./contexts/records/pages/HealthHystoryPage";
 import HealthHistoryPage from "./contexts/records/pages/HealthHystoryPage";
 
 function App() {
