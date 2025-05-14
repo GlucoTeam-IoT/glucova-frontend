@@ -6,7 +6,7 @@ const LoginPage = () => {
       <div className="w-full max-w-lg bg-white p-10 rounded-2xl shadow-2xl">
         <div className="mb-6 text-center">
           <img
-            src="/logo.svg"
+            src="/Glucova.png"
             alt="GlucoVA"
             className="mx-auto h-12"
           />
