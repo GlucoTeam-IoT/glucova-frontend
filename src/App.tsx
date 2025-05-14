@@ -5,6 +5,7 @@ import DashboardPage from "./contexts/records/pages/DashboardPage";
 import AppLayout from "./shared/layout/AppLayout";
 import ProfilePage from "./contexts/access/pages/ProfilePage";
 import HealthHistoryPage from "./contexts/records/pages/HealthHystoryPage";
+import AlertSettingsPage from "./contexts/alerts/pages/AlertSettingsPage";
 
 function App() {
   return (
@@ -34,6 +35,14 @@ function App() {
         element={
           <AppLayout>
             <HealthHistoryPage />
+          </AppLayout>
+        }
+      />
+      <Route
+        path="/Alerts"
+        element={
+          <AppLayout>
+            <AlertSettingsPage />
           </AppLayout>
         }
       />
