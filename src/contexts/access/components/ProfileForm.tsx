@@ -27,10 +27,10 @@ const ProfileForm = ({ formData, onChange, onSubmit }: Props) => {
         {/* Columna derecha - Datos */}
         <div className="flex-1 space-y-4">
           <div>
-            <label className="block text-sm text-gray-600">Full Name</label>
+            <label className="block text-sm text-gray-600">Name</label>
             <input
-              name="fullName"
-              value={formData.fullName}
+              name="Name"
+              value={formData.name}
               onChange={onChange}
               className="mt-1 w-full border rounded px-3 py-2"
               type="text"
