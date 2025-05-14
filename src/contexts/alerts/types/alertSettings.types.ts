@@ -7,5 +7,5 @@ export interface AlertSetting {
   isActive: boolean;
   threshold?: number;
   frequency: NotificationFrequency;
-  timeWithoutReading?: string; // Solo para "missed"
+  timeWithoutReading?: string; 
 }
