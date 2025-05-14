@@ -3,6 +3,7 @@ import LoginPage from "./contexts/access/pages/loginPage";
 import RegisterPage from "./contexts/access/pages/RegisterPage";
 import DashboardPage from "./contexts/records/pages/DashboardPage";
 import AppLayout from "./shared/layout/AppLayout";
+import ProfilePage from "./contexts/access/pages/ProfilePage";
 
 function App() {
   return (
@@ -16,6 +17,14 @@ function App() {
         element={
           <AppLayout>
             <DashboardPage />
+          </AppLayout>
+        }
+      />
+       <Route
+        path="/profile"
+        element={
+          <AppLayout>
+            <ProfilePage />
           </AppLayout>
         }
       />
