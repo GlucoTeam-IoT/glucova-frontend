@@ -40,7 +40,7 @@ export const RegisterForm = () => {
 
     setLoading(true);
     try {
-      const result = await register(form.email, form.password);
+      const result = await register(form.email);
       console.log("Usuario registrado:", result);
       navigate("/login");
     } catch (err: any) {

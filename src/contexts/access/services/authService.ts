@@ -6,6 +6,6 @@ export const login = async (email: string, password: string) => {
   throw new Error("Credenciales inválidas");
 };
 
-export const register = async (email: string, password: string) => {
+export const register = async (email: string) => {
   return { message: "Usuario registrado correctamente", user: { id: Date.now(), email } };
 };

@@ -1,4 +1,4 @@
-import type { HealthRecord } from "../types/heatlhHistory.types";
+import type { HealthRecord } from "../types/healthHistory.types.ts";
 
 export const getHealthHistory = async (): Promise<HealthRecord[]> => {
   return [
