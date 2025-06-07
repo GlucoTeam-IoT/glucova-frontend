@@ -3,6 +3,7 @@ import { getDashboardData } from "../services/dashboardService";
 import type { DashboardData } from "../types/dashboard.types";
 import SummaryCard from "../components/SummaryCard";
 import RecentAlerts from "../components/RecentAlerts";
+import LoadingSpinner from "../../../shared/components/LoadingSpinner";
 
 const DashboardPage = () => {
   const [data, setData] = useState<DashboardData | null>(null);
@@ -18,7 +19,7 @@ const DashboardPage = () => {
   }, []);
 
   if (loading || !data) {
-    return <p className="p-4">Cargando...</p>;
+    return <LoadingSpinner size="large" fullPage/>;
   }
 
   return (

@@ -4,6 +4,7 @@ import { LogOut } from "lucide-react";
 import ProfileForm from "../components/ProfileForm";
 import { logout } from "../services/authService";
 import { getProfile, updateProfile } from "../services/profileService";
+import LoadingSpinner from "../../../shared/components/LoadingSpinner";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -103,16 +104,16 @@ const ProfilePage = () => {
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 rounded-md shadow">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold">Profile Settings</h2>
+        <h2 className="text-xl font-semibold">Configuración del Perfil</h2>
         <button
           onClick={handleLogout}
           className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
         >
           <LogOut className="w-4 h-4" />
-          Logout
+          <span className="hidden md:block">Cerrar sesión</span>
         </button>
       </div>
-      {loading && <p className="text-center py-4">Loading...</p>}
+      {loading && <LoadingSpinner size="large" fullPage />}
 
       {error && <p className="text-center text-red-500 py-2">{error}</p>}
 
