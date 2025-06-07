@@ -1,4 +1,4 @@
-export type NotificationFrequency = "Every Reading" | "Once a Day" | "Never";
+export type NotificationFrequency = "Cada lectura" | "Una vez al día" | "Nunca";
 
 export interface AlertSetting {
   id: string;
@@ -7,5 +7,5 @@ export interface AlertSetting {
   isActive: boolean;
   threshold?: number;
   frequency: NotificationFrequency;
-  timeWithoutReading?: string; 
+  timeWithoutReading?: string;
 }

@@ -5,26 +5,26 @@ export const getAlertSettings = async (): Promise<AlertSetting[]> => {
     {
       id: "1",
       type: "high",
-      title: "High Glucose Alert",
+      title: "Alerta de glucosa alta",
       isActive: true,
       threshold: 180,
-      frequency: "Every Reading",
+      frequency: "Cada lectura",
     },
     {
       id: "2",
       type: "low",
-      title: "Low Glucose Alert",
+      title: "Alerta de glucosa baja",
       isActive: true,
       threshold: 70,
-      frequency: "Every Reading",
+      frequency: "Cada lectura",
     },
     {
       id: "3",
       type: "missed",
-      title: "Missed Reading Alert",
+      title: "Alerta de lectura perdida",
       isActive: false,
-      timeWithoutReading: "4 hours",
-      frequency: "Once a Day",
+      timeWithoutReading: "4 horas",
+      frequency: "Una vez al día",
     },
   ];
 };

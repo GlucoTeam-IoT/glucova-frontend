@@ -10,11 +10,11 @@ const HealthHistoryTable = ({ records }: Props) => {
       <table className="min-w-full text-sm text-left bg-white">
         <thead className="bg-gray-100 text-gray-700">
           <tr>
-            <th className="px-4 py-2">Date</th>
-            <th className="px-4 py-2">Time</th>
-            <th className="px-4 py-2">Glucose (mg/dL)</th>
-            <th className="px-4 py-2">Pressure</th>
-            <th className="px-4 py-2">Weight (kg)</th>
+            <th className="px-4 py-2">Fecha</th>
+            <th className="px-4 py-2">Hora</th>
+            <th className="px-4 py-2">Glucosa (mg/dL)</th>
+            <th className="px-4 py-2">Presión</th>
+            <th className="px-4 py-2">Peso (kg)</th>
             <th className="px-4 py-2">BMI</th>
           </tr>
         </thead>

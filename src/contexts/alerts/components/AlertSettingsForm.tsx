@@ -17,24 +17,25 @@ const AlertSettingsForm = () => {
   const toggleSetting = (id: string) => {
     setSettings((prev) =>
       prev.map((setting) =>
-        setting.id === id ? { ...setting, isActive: !setting.isActive } : setting
+        setting.id === id
+          ? { ...setting, isActive: !setting.isActive }
+          : setting
       )
     );
   };
 
-const handleFrequencyChange = (id: string, newFrequency: string) => {
-  setSettings((prev) =>
-    prev.map((setting) =>
-      setting.id === id
-        ? {
-            ...setting,
-            frequency: newFrequency as AlertSetting["frequency"], // 🔧 cast
-          }
-        : setting
-    )
-  );
-};
-
+  const handleFrequencyChange = (id: string, newFrequency: string) => {
+    setSettings((prev) =>
+      prev.map((setting) =>
+        setting.id === id
+          ? {
+              ...setting,
+              frequency: newFrequency as AlertSetting["frequency"], // 🔧 cast
+            }
+          : setting
+      )
+    );
+  };
 
   return (
     <form className="space-y-4">
@@ -49,7 +50,9 @@ const handleFrequencyChange = (id: string, newFrequency: string) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
               {setting.threshold !== undefined && (
                 <div>
-                  <label className="text-sm text-gray-600">Threshold (mg/dL)</label>
+                  <label className="text-sm text-gray-600">
+                    Límite (mg/dL)
+                  </label>
                   <input
                     type="number"
                     value={setting.threshold}
@@ -61,7 +64,9 @@ const handleFrequencyChange = (id: string, newFrequency: string) => {
 
               {setting.timeWithoutReading && (
                 <div>
-                  <label className="text-sm text-gray-600">Time Without Reading</label>
+                  <label className="text-sm text-gray-600">
+                    Tiempo sin leer
+                  </label>
                   <input
                     type="text"
                     value={setting.timeWithoutReading}
@@ -72,29 +77,34 @@ const handleFrequencyChange = (id: string, newFrequency: string) => {
               )}
 
               <div>
-                <label className="text-sm text-gray-600">Notification Frequency</label>
+                <label className="text-sm text-gray-600">
+                  Notificación de frecuencia
+                </label>
                 <select
                   value={setting.frequency}
                   disabled={!setting.isActive}
-                  onChange={(e) => handleFrequencyChange(setting.id, e.target.value)}
+                  onChange={(e) =>
+                    handleFrequencyChange(setting.id, e.target.value)
+                  }
                   className={`w-full mt-1 border rounded px-3 py-2 ${
-                    !setting.isActive ? "bg-gray-100 text-gray-400 cursor-not-allowed" : ""
+                    !setting.isActive
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : ""
                   }`}
                 >
-                  <option>Every Reading</option>
-                  <option>Once a Day</option>
-                  <option>Never</option>
+                  <option>Cada lectura</option>
+                  <option>Una vez al día</option>
+                  <option>Nunca</option>
                 </select>
               </div>
             </div>
           </div>
 
           <div className="self-start md:self-auto">
-         <ToggleSwitch
-             enabled={setting.isActive}
-             onToggle={() => toggleSetting(setting.id)}
-          />
-
+            <ToggleSwitch
+              enabled={setting.isActive}
+              onToggle={() => toggleSetting(setting.id)}
+            />
           </div>
         </div>
       ))}
