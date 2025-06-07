@@ -6,8 +6,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 const apiClient = axios.create({
   baseURL: API_URL,
   headers: {
-    "Content-Type": "application/json"
-  }
+    "Content-Type": "application/json",
+  },
 });
 
 apiClient.interceptors.request.use(
@@ -28,8 +28,9 @@ export const getProfile = async (): Promise<User> => {
       id: response.data.id,
       name: response.data.name || "",
       email: response.data.email || "",
+      phone: response.data.phone || "",
       age: response.data.age?.toString() || "",
-      photoUrl: response.data.photo_url || "/Glucova.png"
+      photoUrl: response.data.photo_url || "/Glucova.png",
     };
   } catch (error) {
     console.error("Error getting profile:", error);
@@ -42,9 +43,10 @@ export const updateProfile = async (data: Partial<User>) => {
     const apiData = {
       name: data.name,
       email: data.email,
+      phone: data.phone,
       age: data.age ? Number(data.age) : undefined,
     };
-    
+
     const response = await apiClient.put("/users/update-information", apiData);
     return response.data;
   } catch (error) {
