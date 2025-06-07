@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { register } from "../services/authService";
+import { login, register } from "../services/authService";
+import { updateProfile } from "../services/profileService";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
 
 export const RegisterForm = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
+    phone: "",
+    age: "",
     password: "",
     confirmPassword: "",
     agreeTerms: false,
@@ -40,11 +41,29 @@ export const RegisterForm = () => {
 
     setLoading(true);
     try {
-      const result = await register(form.email);
-      console.log("Usuario registrado:", result);
-      navigate("/login");
+      // Register with email and password only
+      await register({
+        email: form.email,
+        password: form.password,
+      });
+
+      // Auto-login after successful registration
+      await login(form.email, form.password);
+      console.log("User logged in successfully");
+
+      // Update user profile with additional information
+      await updateProfile({
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        age: form.age ? Number(form.age) : undefined,
+      });
+      console.log("User profile updated successfully");
+
+      // Navigate to dashboard after successful profile update
+      navigate("/dashboard");
     } catch (err: any) {
-      setError(err.message || "Error desconocido");
+      setError(err.message || "Unknown error");
     } finally {
       setLoading(false);
     }
@@ -56,26 +75,15 @@ export const RegisterForm = () => {
         <div className="text-red-600 bg-red-100 p-2 rounded">{error}</div>
       )}
 
-      <div className="flex gap-4">
-        <input
-          type="text"
-          name="firstName"
-          placeholder="First Name"
-          className="w-full border border-gray-300 rounded-md px-4 py-2"
-          value={form.firstName}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="lastName"
-          placeholder="Last Name"
-          className="w-full border border-gray-300 rounded-md px-4 py-2"
-          value={form.lastName}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <input
+        type="text"
+        name="name"
+        placeholder="Full Name"
+        className="w-full border border-gray-300 rounded-md px-4 py-2"
+        value={form.name}
+        onChange={handleChange}
+        required
+      />
 
       <input
         type="email"
@@ -83,6 +91,26 @@ export const RegisterForm = () => {
         placeholder="Email Address"
         className="w-full border border-gray-300 rounded-md px-4 py-2"
         value={form.email}
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="tel"
+        name="phone"
+        placeholder="Phone Number"
+        className="w-full border border-gray-300 rounded-md px-4 py-2"
+        value={form.phone}
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="number"
+        name="age"
+        placeholder="Age"
+        className="w-full border border-gray-300 rounded-md px-4 py-2"
+        value={form.age}
         onChange={handleChange}
         required
       />
@@ -127,7 +155,7 @@ export const RegisterForm = () => {
 
       <p className="text-center text-sm mt-2 text-gray-600">
         Already have an account?{" "}
-         <Link to="/login" className="text-blue-600 hover:underline">
+        <Link to="/login" className="text-blue-600 hover:underline">
           Login
         </Link>
       </p>
