@@ -26,7 +26,9 @@ const ProfileForm = ({ formData, onChange, onSubmit }: Props) => {
         {/* Columna derecha - Datos */}
         <div className="flex-1 space-y-4">
           <div>
-            <label className="block text-sm text-gray-600">Nombre completo</label>
+            <label className="block text-sm text-gray-600">
+              Nombre completo
+            </label>
             <input
               name="Name"
               value={formData.name}
@@ -68,7 +70,7 @@ const ProfileForm = ({ formData, onChange, onSubmit }: Props) => {
             />
           </div>
 
-          <hr className="my-4" />
+          {/* <hr className="my-4" />
           <h3 className="font-semibold text-lg">Cambiar contraseña</h3>
 
           <div>
@@ -93,7 +95,7 @@ const ProfileForm = ({ formData, onChange, onSubmit }: Props) => {
               className="mt-1 w-full border rounded px-3 py-2"
               type="password"
             />
-          </div>
+          </div> */}
 
           <div className="text-right pt-2">
             <button

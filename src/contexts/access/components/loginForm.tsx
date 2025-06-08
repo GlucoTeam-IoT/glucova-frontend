@@ -3,7 +3,6 @@ import { login } from "../services/authService";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-
 export const LoginForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("test@glucova.com");
@@ -17,8 +16,8 @@ export const LoginForm = () => {
     setLoading(true);
 
     try {
-      const result = await login(email, password);
-      console.log("Login exitoso:", result);
+      await login(email, password);
+      // console.log("Login exitoso:", result);
       navigate("/dashboard");
     } catch (err: any) {
       setError(err.message || "Error desconocido");
@@ -69,13 +68,13 @@ export const LoginForm = () => {
         </a>
       </div>
 
-    <button
+      <button
         type="submit"
         disabled={loading}
-        className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition disabled:bg-gray-400">
+        className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition disabled:bg-gray-400"
+      >
         {loading ? "Ingresando..." : "Login"}
       </button>
-
 
       <p className="text-center text-sm mt-2 text-gray-600">
         Don’t have an account?{" "}
