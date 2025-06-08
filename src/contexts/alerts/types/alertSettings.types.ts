@@ -1,11 +1,20 @@
-export type NotificationFrequency = "Cada lectura" | "Una vez al día" | "Nunca";
-
-export interface AlertSetting {
+export interface Alert {
   id: string;
-  type: "high" | "low" | "missed";
-  title: string;
-  isActive: boolean;
-  threshold?: number;
-  frequency: NotificationFrequency;
-  timeWithoutReading?: string;
+  device_id: string;
+  level: "low" | "medium" | "high" | "critical";
+  message: string;
+  timestamp?: string;
+}
+
+export type NewAlertData = {
+  device_id: string;
+  level: "low" | "medium" | "high" | "critical";
+  message: string;
+};
+
+export interface AlertsFilter {
+  device_id?: string | null;
+  level?: string | null;
+  limit?: number;
+  skip?: number;
 }

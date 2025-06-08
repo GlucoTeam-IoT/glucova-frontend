@@ -1,115 +1,114 @@
-import { useEffect, useState } from "react";
-import { getAlertSettings } from "../services/alertSettingsService";
-import type { AlertSetting } from "../types/alertSettings.types";
-import ToggleSwitch from "./TogleSwitch";
+// import { useEffect, useState } from "react";
 
-const AlertSettingsForm = () => {
-  const [settings, setSettings] = useState<AlertSetting[]>([]);
+// import ToggleSwitch from "./TogleSwitch";
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      const data = await getAlertSettings();
-      setSettings(data);
-    };
-    fetchSettings();
-  }, []);
+// const AlertSettingsForm = () => {
+//   const [settings, setSettings] = useState<AlertSetting[]>([]);
 
-  const toggleSetting = (id: string) => {
-    setSettings((prev) =>
-      prev.map((setting) =>
-        setting.id === id
-          ? { ...setting, isActive: !setting.isActive }
-          : setting
-      )
-    );
-  };
+//   useEffect(() => {
+//     const fetchSettings = async () => {
+//       const data = await getAlertSettings();
+//       setSettings(data);
+//     };
+//     fetchSettings();
+//   }, []);
 
-  const handleFrequencyChange = (id: string, newFrequency: string) => {
-    setSettings((prev) =>
-      prev.map((setting) =>
-        setting.id === id
-          ? {
-              ...setting,
-              frequency: newFrequency as AlertSetting["frequency"], // 🔧 cast
-            }
-          : setting
-      )
-    );
-  };
+//   const toggleSetting = (id: string) => {
+//     setSettings((prev) =>
+//       prev.map((setting) =>
+//         setting.id === id
+//           ? { ...setting, isActive: !setting.isActive }
+//           : setting
+//       )
+//     );
+//   };
 
-  return (
-    <form className="space-y-4">
-      {settings.map((setting) => (
-        <div
-          key={setting.id}
-          className="bg-white p-4 rounded-md shadow flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-        >
-          <div className="flex-1">
-            <h3 className="font-semibold">{setting.title}</h3>
+//   const handleFrequencyChange = (id: string, newFrequency: string) => {
+//     setSettings((prev) =>
+//       prev.map((setting) =>
+//         setting.id === id
+//           ? {
+//               ...setting,
+//               frequency: newFrequency as AlertSetting["frequency"], // 🔧 cast
+//             }
+//           : setting
+//       )
+//     );
+//   };
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-              {setting.threshold !== undefined && (
-                <div>
-                  <label className="text-sm text-gray-600">
-                    Límite (mg/dL)
-                  </label>
-                  <input
-                    type="number"
-                    value={setting.threshold}
-                    disabled
-                    className="w-full mt-1 border rounded px-3 py-2 bg-gray-100"
-                  />
-                </div>
-              )}
+//   return (
+//     <form className="space-y-4">
+//       {settings.map((setting) => (
+//         <div
+//           key={setting.id}
+//           className="bg-white p-4 rounded-md shadow flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+//         >
+//           <div className="flex-1">
+//             <h3 className="font-semibold">{setting.title}</h3>
 
-              {setting.timeWithoutReading && (
-                <div>
-                  <label className="text-sm text-gray-600">
-                    Tiempo sin leer
-                  </label>
-                  <input
-                    type="text"
-                    value={setting.timeWithoutReading}
-                    disabled
-                    className="w-full mt-1 border rounded px-3 py-2 bg-gray-100"
-                  />
-                </div>
-              )}
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+//               {setting.threshold !== undefined && (
+//                 <div>
+//                   <label className="text-sm text-gray-600">
+//                     Límite (mg/dL)
+//                   </label>
+//                   <input
+//                     type="number"
+//                     value={setting.threshold}
+//                     disabled
+//                     className="w-full mt-1 border rounded px-3 py-2 bg-gray-100"
+//                   />
+//                 </div>
+//               )}
 
-              <div>
-                <label className="text-sm text-gray-600">
-                  Notificación de frecuencia
-                </label>
-                <select
-                  value={setting.frequency}
-                  disabled={!setting.isActive}
-                  onChange={(e) =>
-                    handleFrequencyChange(setting.id, e.target.value)
-                  }
-                  className={`w-full mt-1 border rounded px-3 py-2 ${
-                    !setting.isActive
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : ""
-                  }`}
-                >
-                  <option>Cada lectura</option>
-                  <option>Una vez al día</option>
-                  <option>Nunca</option>
-                </select>
-              </div>
-            </div>
-          </div>
+//               {setting.timeWithoutReading && (
+//                 <div>
+//                   <label className="text-sm text-gray-600">
+//                     Tiempo sin leer
+//                   </label>
+//                   <input
+//                     type="text"
+//                     value={setting.timeWithoutReading}
+//                     disabled
+//                     className="w-full mt-1 border rounded px-3 py-2 bg-gray-100"
+//                   />
+//                 </div>
+//               )}
 
-          <div className="self-start md:self-auto">
-            <ToggleSwitch
-              enabled={setting.isActive}
-              onToggle={() => toggleSetting(setting.id)}
-            />
-          </div>
-        </div>
-      ))}
-    </form>
-  );
-};
+//               <div>
+//                 <label className="text-sm text-gray-600">
+//                   Notificación de frecuencia
+//                 </label>
+//                 <select
+//                   value={setting.frequency}
+//                   disabled={!setting.isActive}
+//                   onChange={(e) =>
+//                     handleFrequencyChange(setting.id, e.target.value)
+//                   }
+//                   className={`w-full mt-1 border rounded px-3 py-2 ${
+//                     !setting.isActive
+//                       ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+//                       : ""
+//                   }`}
+//                 >
+//                   <option>Cada lectura</option>
+//                   <option>Una vez al día</option>
+//                   <option>Nunca</option>
+//                 </select>
+//               </div>
+//             </div>
+//           </div>
 
-export default AlertSettingsForm;
+//           <div className="self-start md:self-auto">
+//             <ToggleSwitch
+//               enabled={setting.isActive}
+//               onToggle={() => toggleSetting(setting.id)}
+//             />
+//           </div>
+//         </div>
+//       ))}
+//     </form>
+//   );
+// };
+
+// export default AlertSettingsForm;
