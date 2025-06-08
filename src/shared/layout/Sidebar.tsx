@@ -1,4 +1,13 @@
-import { LineChart, User, ClipboardList, Bell, Menu, X } from "lucide-react";
+import {
+  LineChart,
+  User,
+  ClipboardList,
+  Bell,
+  Menu,
+  X,
+  Users,
+  HardDrive,
+} from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 
@@ -78,12 +87,29 @@ const Sidebar = () => {
           </NavLink>
 
           <NavLink
+            to="/devices"
+            className={navLinkClasses}
+            onClick={handleLinkClick}
+          >
+            <HardDrive size={20} />
+            Dispositivos
+          </NavLink>
+
+          <NavLink
             to="/alerts"
             className={navLinkClasses}
             onClick={handleLinkClick}
           >
             <Bell size={20} />
             Alertas
+          </NavLink>
+          <NavLink
+            to="/contacts"
+            className={navLinkClasses}
+            onClick={handleLinkClick}
+          >
+            <Users size={20} />
+            Contactos
           </NavLink>
         </nav>
       </div>

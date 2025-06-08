@@ -4,8 +4,10 @@ import RegisterPage from "./contexts/access/pages/RegisterPage";
 import DashboardPage from "./contexts/records/pages/DashboardPage";
 import AppLayout from "./shared/layout/AppLayout";
 import ProfilePage from "./contexts/access/pages/ProfilePage";
-import HealthHistoryPage from "./contexts/records/pages/HealthHystoryPage";
+import HealthHistoryPage from "./contexts/records/pages/HealthHistoryPage";
 import AlertSettingsPage from "./contexts/alerts/pages/AlertSettingsPage";
+import ContactsPage from "./contexts/emergencies/pages/ContactsPage";
+import DevicesPage from "./contexts/devices/pages/DevicesPage";
 
 function App() {
   return (
@@ -43,6 +45,22 @@ function App() {
         element={
           <AppLayout>
             <AlertSettingsPage />
+          </AppLayout>
+        }
+      />
+      <Route
+        path="/contacts"
+        element={
+          <AppLayout>
+            <ContactsPage />
+          </AppLayout>
+        }
+      />
+      <Route
+        path="/devices"
+        element={
+          <AppLayout>
+            <DevicesPage />
           </AppLayout>
         }
       />
