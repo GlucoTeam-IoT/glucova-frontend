@@ -5,11 +5,15 @@ import {
   deleteDevice,
 } from "../services/devicesService";
 import type { Device, NewDeviceData } from "../types/devices.types";
-import DevicesTable from "../components/DevicesTable";
 import AddDeviceModal from "../components/AddDeviceModal";
 import DeleteDeviceModal from "../components/DeleteDeviceModal";
 import LoadingSpinner from "../../../shared/components/LoadingSpinner";
-import { HardDrive, Plus } from "lucide-react";
+import GenericTable from "../../../shared/components/GenericTable";
+import type {
+  TableColumn,
+  TableAction,
+} from "../../../shared/components/GenericTable";
+import { HardDrive, Plus, Trash2 } from "lucide-react";
 
 const DevicesPage = () => {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -56,8 +60,8 @@ const DevicesPage = () => {
     }
   };
 
-  const handleDeleteClick = (deviceId: string) => {
-    setDeviceToDelete(deviceId);
+  const handleDeleteClick = (device: Device) => {
+    setDeviceToDelete(device.id);
   };
 
   const handleDeleteConfirm = async () => {
@@ -83,6 +87,74 @@ const DevicesPage = () => {
   const handleDeleteCancel = () => {
     setDeviceToDelete(null);
   };
+
+  // Configure table columns
+  const tableColumns: TableColumn<Device>[] = [
+    {
+      key: "id",
+      label: "ID del Dispositivo",
+      render: (id: string) => <span className="font-medium">{id}</span>,
+    },
+    {
+      key: "timestamp",
+      label: "Fecha de Registro",
+      render: (timestamp: string) => {
+        const date = new Date(timestamp);
+        return date.toLocaleDateString();
+      },
+    },
+    {
+      key: "timestamp",
+      label: "Hora",
+      render: (timestamp: string) => {
+        const date = new Date(timestamp);
+        return date.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      },
+    },
+    {
+      key: "status",
+      label: "Estado",
+      render: (status: string) => {
+        let statusClass = "";
+        let statusText = "";
+
+        switch (status.toLowerCase()) {
+          case "active":
+            statusText = "Activo";
+            statusClass = "text-green-600 bg-green-100";
+            break;
+          case "inactive":
+            statusText = "Inactivo";
+            statusClass = "text-gray-600 bg-gray-100";
+            break;
+          default:
+            statusText = status.charAt(0).toUpperCase() + status.slice(1);
+            statusClass = "text-gray-600 bg-gray-100";
+        }
+
+        return (
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-medium ${statusClass}`}
+          >
+            {statusText}
+          </span>
+        );
+      },
+    },
+  ];
+
+  // Configure table actions
+  const tableActions: TableAction<Device>[] = [
+    {
+      label: "Eliminar dispositivo",
+      icon: <Trash2 size={18} />,
+      onClick: handleDeleteClick,
+      className: "p-1 text-red-500 hover:bg-red-50 rounded-full bg-white",
+    },
+  ];
 
   return (
     <>
@@ -128,16 +200,19 @@ const DevicesPage = () => {
 
       {loading ? (
         <LoadingSpinner size="large" fullPage />
-      ) : devices.length > 0 ? (
-        <DevicesTable devices={devices} onDelete={handleDeleteClick} />
       ) : (
-        <div className="p-8 bg-white rounded-md shadow text-center">
-          <div className="flex justify-center mb-3">
-            <div className="bg-blue-100 rounded-full p-3">
-              <HardDrive className="w-8 h-8 text-blue-600" />
-            </div>
-          </div>
-          <p className="text-gray-500 mb-2">No hay dispositivos registrados</p>
+        <div className="mt-6">
+          <GenericTable
+            data={devices}
+            columns={tableColumns}
+            actions={tableActions}
+            emptyState={{
+              icon: <HardDrive className="w-8 h-8 text-blue-600" />,
+              title: "No hay dispositivos registrados",
+              description:
+                "Los dispositivos aparecerán aquí cuando los registres",
+            }}
+          />
         </div>
       )}
     </>

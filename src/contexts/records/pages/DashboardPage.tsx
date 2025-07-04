@@ -1,50 +1,75 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getDashboardData } from "../services/dashboardService";
 import type { DashboardData } from "../types/dashboard.types";
 import SummaryCard from "../components/SummaryCard";
 import RecentAlerts from "../components/RecentAlerts";
+import RecentGlucoseRecords from "../components/RecentGlucoseRecords";
 import LoadingSpinner from "../../../shared/components/LoadingSpinner";
 
 const DashboardPage = () => {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    try {
       const dashboardData = await getDashboardData();
       setData(dashboardData);
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
       setLoading(false);
-    };
-    fetchData();
+    }
   }, []);
 
+  useEffect(() => {
+    fetchData();
+
+    // Set up automatic refresh every 30 seconds
+    const interval = setInterval(() => {
+      fetchData();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [fetchData]);
+
   if (loading || !data) {
-    return <LoadingSpinner size="large" fullPage/>;
+    return <LoadingSpinner size="large" fullPage />;
   }
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
-
-      {/* Cards resumen */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {data.vitals.map((vital) => (
-          <SummaryCard key={vital.label} vital={vital} />
-        ))}
-      </div>
-
-      {/* Gráficas (placeholder) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-white h-40 rounded-lg shadow p-4">
-          <h2 className="font-semibold text-gray-700">Niveles de Glucosa</h2>
-        </div>
-        <div className="bg-white h-40 rounded-lg shadow p-4">
-          <h2 className="font-semibold text-gray-700">Presión Arterial</h2>
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+        <div className="flex items-center space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          <span className="text-sm text-gray-500">
+            Actualización automática cada 30s
+          </span>
         </div>
       </div>
 
-      {/* Alertas recientes */}
-      <RecentAlerts alerts={data.alerts} />
+      {/* Main Grid Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column - Glucose Card */}
+        <div className="lg:col-span-1">
+          {data.vitals.map((vital) => (
+            <div key={vital.label} className="h-full">
+              <SummaryCard vital={vital} />
+            </div>
+          ))}
+        </div>
+
+        {/* Right Column - Recent Records */}
+        <div className="lg:col-span-2">
+          <RecentGlucoseRecords records={data.recentGlucoseRecords || []} />
+        </div>
+      </div>
+
+      {/* Bottom Section - Alerts */}
+      <div className="w-full">
+        <RecentAlerts alerts={data.alerts} />
+      </div>
     </div>
   );
 };

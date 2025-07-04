@@ -78,7 +78,7 @@ export const RegisterForm = () => {
       <input
         type="text"
         name="name"
-        placeholder="Full Name"
+        placeholder="Nombre completo"
         className="w-full border border-gray-300 rounded-md px-4 py-2"
         value={form.name}
         onChange={handleChange}
@@ -88,7 +88,7 @@ export const RegisterForm = () => {
       <input
         type="email"
         name="email"
-        placeholder="Email Address"
+        placeholder="Correo electrónico"
         className="w-full border border-gray-300 rounded-md px-4 py-2"
         value={form.email}
         onChange={handleChange}
@@ -98,7 +98,7 @@ export const RegisterForm = () => {
       <input
         type="tel"
         name="phone"
-        placeholder="Phone Number"
+        placeholder="Teléfono"
         className="w-full border border-gray-300 rounded-md px-4 py-2"
         value={form.phone}
         onChange={handleChange}
@@ -108,7 +108,7 @@ export const RegisterForm = () => {
       <input
         type="number"
         name="age"
-        placeholder="Age"
+        placeholder="Edad"
         className="w-full border border-gray-300 rounded-md px-4 py-2"
         value={form.age}
         onChange={handleChange}
@@ -118,7 +118,7 @@ export const RegisterForm = () => {
       <input
         type="password"
         name="password"
-        placeholder="Password"
+        placeholder="Contraseña"
         className="w-full border border-gray-300 rounded-md px-4 py-2"
         value={form.password}
         onChange={handleChange}
@@ -128,7 +128,7 @@ export const RegisterForm = () => {
       <input
         type="password"
         name="confirmPassword"
-        placeholder="Confirm Password"
+        placeholder="Confirmar contraseña"
         className="w-full border border-gray-300 rounded-md px-4 py-2"
         value={form.confirmPassword}
         onChange={handleChange}
@@ -142,7 +142,7 @@ export const RegisterForm = () => {
           checked={form.agreeTerms}
           onChange={handleChange}
         />
-        I agree to the Terms of Service and Privacy Policy
+        Acepto los Términos y Condiciones y la Política de Privacidad
       </label>
 
       <button
@@ -150,13 +150,13 @@ export const RegisterForm = () => {
         disabled={loading}
         className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition disabled:bg-gray-400"
       >
-        {loading ? "Creating..." : "Create Account"}
+        {loading ? "Creando..." : "Crear cuenta"}
       </button>
 
       <p className="text-center text-sm mt-2 text-gray-600">
-        Already have an account?{" "}
+        Ya tienes una cuenta?{" "}
         <Link to="/login" className="text-blue-600 hover:underline">
-          Login
+          Inicia sesión
         </Link>
       </p>
     </form>

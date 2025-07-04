@@ -9,16 +9,23 @@ import type {
   NewAlertData,
   AlertsFilter,
 } from "../types/alertSettings.types";
-import AlertsTable from "../components/AlertsTable";
-import AlertFilters from "../components/AlertFilters";
 import DeleteAlertModal from "../components/DeleteAlertModal";
-import LoadingSpinner from "../../../shared/components/LoadingSpinner";
-import { Plus } from "lucide-react";
-
 import CreateAlertModal from "../components/CreateAlertModal";
+import LoadingSpinner from "../../../shared/components/LoadingSpinner";
+import GenericFilters from "../../../shared/components/GenericFilters";
+import GenericTable from "../../../shared/components/GenericTable";
+import type { FilterField } from "../../../shared/components/GenericFilters";
+import type {
+  TableColumn,
+  TableAction,
+} from "../../../shared/components/GenericTable";
+import { Plus, Bell, Trash2 } from "lucide-react";
+import { getDevices } from "../../devices/services/devicesService";
+import type { Device } from "../../devices/types/devices.types";
 
 const AlertSettingsPage = () => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
+  const [devices, setDevices] = useState<Device[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<AlertsFilter>({
     limit: 100,
@@ -29,8 +36,21 @@ const AlertSettingsPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    loadInitialData();
+  }, []);
+
+  useEffect(() => {
     loadAlerts();
   }, [filters]);
+
+  const loadInitialData = async () => {
+    try {
+      const devicesList = await getDevices();
+      setDevices(devicesList);
+    } catch (err) {
+      console.error("Failed to load devices", err);
+    }
+  };
 
   const loadAlerts = async () => {
     setLoading(true);
@@ -64,8 +84,8 @@ const AlertSettingsPage = () => {
     }
   };
 
-  const handleDeleteClick = (alertId: string) => {
-    setAlertToDelete(alertId);
+  const handleDeleteClick = (alert: Alert) => {
+    setAlertToDelete(alert.id);
   };
 
   const handleDeleteConfirm = async () => {
@@ -90,9 +110,133 @@ const AlertSettingsPage = () => {
     setAlertToDelete(null);
   };
 
-  const handleFilterChange = (newFilters: AlertsFilter) => {
+  const handleFilterChange = (newFilters: Record<string, any>) => {
     setFilters({ ...filters, ...newFilters });
   };
+
+  // Configure filter fields
+  const filterFields: FilterField[] = [
+    {
+      name: "device_id",
+      label: "Dispositivo",
+      type: "select",
+      options: [
+        { value: "", label: "Todos los dispositivos" },
+        ...devices.map((device) => ({
+          value: device.id,
+          label: `${device.id.substring(0, 8)}...`,
+        })),
+      ],
+    },
+    {
+      name: "level",
+      label: "Nivel",
+      type: "select",
+      options: [
+        { value: "", label: "Todos los niveles" },
+        { value: "low", label: "Bajo" },
+        { value: "medium", label: "Medio" },
+        { value: "high", label: "Alto" },
+        { value: "critical", label: "Crítico" },
+      ],
+    },
+    {
+      name: "limit",
+      label: "Mostrar",
+      type: "select",
+      defaultValue: 100,
+      options: [
+        { value: 10, label: "10 alertas" },
+        { value: 25, label: "25 alertas" },
+        { value: 50, label: "50 alertas" },
+        { value: 100, label: "100 alertas" },
+      ],
+    },
+  ];
+
+  // Configure table columns
+  const tableColumns: TableColumn<Alert>[] = [
+    {
+      key: "level",
+      label: "Nivel",
+      render: (level: string) => {
+        let levelClass = "";
+        let levelText = "";
+
+        switch (level.toLowerCase()) {
+          case "low":
+            levelText = "Bajo";
+            levelClass = "text-blue-600 bg-blue-100";
+            break;
+          case "medium":
+            levelText = "Medio";
+            levelClass = "text-yellow-600 bg-yellow-100";
+            break;
+          case "high":
+            levelText = "Alto";
+            levelClass = "text-red-600 bg-red-100";
+            break;
+          case "critical":
+            levelText = "Crítico";
+            levelClass = "text-red-700 bg-red-200";
+            break;
+          default:
+            levelText = level.charAt(0).toUpperCase() + level.slice(1);
+            levelClass = "text-gray-600 bg-gray-100";
+        }
+
+        return (
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-medium ${levelClass}`}
+          >
+            {levelText}
+          </span>
+        );
+      },
+    },
+    {
+      key: "message",
+      label: "Mensaje",
+    },
+    {
+      key: "device_id",
+      label: "Dispositivo",
+      render: (deviceId: string) => (
+        <span className="font-medium">{deviceId.substring(0, 8)}...</span>
+      ),
+    },
+    {
+      key: "timestamp",
+      label: "Fecha",
+      render: (timestamp: string) => {
+        if (!timestamp) return "N/A";
+        const date = new Date(timestamp);
+        return date.toLocaleDateString();
+      },
+    },
+    {
+      key: "timestamp",
+      label: "Hora",
+      render: (timestamp: string) => {
+        if (!timestamp) return "N/A";
+        const date = new Date(timestamp);
+        return date.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      },
+    },
+  ];
+
+  // Configure table actions
+  const tableActions: TableAction<Alert>[] = [
+    {
+      label: "Eliminar alerta",
+      icon: <Trash2 size={18} />,
+      onClick: handleDeleteClick,
+      className: "p-1 text-red-500 hover:bg-red-50 rounded-full bg-white",
+    },
+  ];
 
   return (
     <>
@@ -117,7 +261,12 @@ const AlertSettingsPage = () => {
         </div>
       )}
 
-      <AlertFilters onFilterChange={handleFilterChange} />
+      <GenericFilters
+        title="Filtrar alertas"
+        fields={filterFields}
+        onFilterChange={handleFilterChange}
+        initialFilters={filters}
+      />
 
       <CreateAlertModal
         isOpen={showCreateModal}
@@ -135,8 +284,18 @@ const AlertSettingsPage = () => {
       {loading ? (
         <LoadingSpinner size="large" fullPage />
       ) : (
-        <div className="mt-6 ">
-          <AlertsTable alerts={alerts} onDelete={handleDeleteClick} />
+        <div className="mt-6">
+          <GenericTable
+            data={alerts}
+            columns={tableColumns}
+            actions={tableActions}
+            emptyState={{
+              icon: <Bell className="w-8 h-8 text-blue-600" />,
+              title: "No hay alertas disponibles",
+              description:
+                "Las alertas aparecerán aquí cuando estén disponibles",
+            }}
+          />
         </div>
       )}
     </>
