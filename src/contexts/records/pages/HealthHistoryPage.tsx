@@ -8,6 +8,7 @@ import GenericTable from "../../../shared/components/GenericTable";
 import type { FilterField } from "../../../shared/components/GenericFilters";
 import type { TableColumn } from "../../../shared/components/GenericTable";
 import { Activity } from "lucide-react";
+import { motion } from "motion/react";
 
 const HealthHistoryPage = () => {
   const [, setRecords] = useState<HealthRecord[]>([]);
@@ -138,7 +139,12 @@ const HealthHistoryPage = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <motion.div
+      className="space-y-6"
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <h1 className="text-2xl font-semibold text-gray-800">Historial Médico</h1>
 
       <GenericFilters
@@ -164,7 +170,7 @@ const HealthHistoryPage = () => {
           />
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

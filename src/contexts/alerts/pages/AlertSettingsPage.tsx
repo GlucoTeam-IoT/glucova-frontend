@@ -22,6 +22,7 @@ import type {
 import { Plus, Bell, Trash2 } from "lucide-react";
 import { getDevices } from "../../devices/services/devicesService";
 import type { Device } from "../../devices/types/devices.types";
+import { motion } from "motion/react";
 
 const AlertSettingsPage = () => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
@@ -239,7 +240,11 @@ const AlertSettingsPage = () => {
   ];
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <div className="flex mb-6 flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-gray-800">Alertas</h1>
@@ -298,7 +303,7 @@ const AlertSettingsPage = () => {
           />
         </div>
       )}
-    </>
+    </motion.div>
   );
 };
 

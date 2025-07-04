@@ -5,6 +5,7 @@ import ProfileForm from "../components/ProfileForm";
 import { logout } from "../services/authService";
 import { getProfile, updateProfile } from "../services/profileService";
 import LoadingSpinner from "../../../shared/components/LoadingSpinner";
+import { motion } from "motion/react";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -102,7 +103,12 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded-md shadow">
+    <motion.div
+      className="max-w-4xl mx-auto bg-white p-6 rounded-md shadow"
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Configuración del Perfil</h2>
         <button
@@ -124,7 +130,7 @@ const ProfilePage = () => {
           onSubmit={handleSubmit}
         />
       )}
-    </div>
+    </motion.div>
   );
 };
 

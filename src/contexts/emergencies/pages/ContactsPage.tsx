@@ -5,6 +5,7 @@ import { UserPlus } from "lucide-react";
 import type { Contact, NewContactData } from "../types/contact.types";
 import { addContact, getContacts } from "../services/contactService";
 import AddContactForm from "../components/AddContactForm";
+import { motion } from "motion/react";
 
 const ContactsPage = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -49,7 +50,11 @@ const ContactsPage = () => {
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <div className="flex mb-6 flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-gray-800">
@@ -100,7 +105,7 @@ const ContactsPage = () => {
           )}
         </div>
       )}
-    </>
+    </motion.div>
   );
 };
 

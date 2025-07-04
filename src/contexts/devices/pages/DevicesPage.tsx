@@ -14,6 +14,7 @@ import type {
   TableAction,
 } from "../../../shared/components/GenericTable";
 import { HardDrive, Plus, Trash2 } from "lucide-react";
+import { motion } from "motion/react";
 
 const DevicesPage = () => {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -157,7 +158,11 @@ const DevicesPage = () => {
   ];
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <div className="flex mb-6 flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-gray-800">
@@ -215,7 +220,7 @@ const DevicesPage = () => {
           />
         </div>
       )}
-    </>
+    </motion.div>
   );
 };
 
