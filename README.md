@@ -1,54 +1,136 @@
-# React + TypeScript + Vite
+# GlucoVA Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application for glucose monitoring and diabetes management, built with modern web technologies.
 
-Currently, two official plugins are available:
+## Technologies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React** - Frontend library for building user interfaces
+- **TypeScript** - Static type-checking for JavaScript
+- **Vite** - Next-generation frontend tooling
+- **Tailwind CSS** - Utility-first CSS framework
+- **Motion** - Animation library for React
+- **React Router DOM** - Client-side routing
+- **Axios** - HTTP client for API requests
+- **Lucide React** - Beautiful & customizable SVG icons
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🏠 Dashboard
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Real-time glucose monitoring with auto-refresh every 30 seconds
+- Latest glucose readings with color-coded status indicators
+- Recent glucose records history
+- Alert notifications with severity levels
+- Responsive 3-column layout optimized for different screen sizes
+
+### 📊 Health History
+
+- Complete glucose level history with filtering options
+- Configurable data display (10, 25, 50, 100 records)
+- Color-coded glucose levels (Low, Normal, Elevated, High)
+- Device tracking for each reading
+- Timestamp and description for each record
+
+### 🚨 Alert Management
+
+- Configurable glucose alerts with multiple severity levels (Low, Medium, High, Critical)
+- Device-specific alert configuration
+- Alert history with filtering capabilities
+- Real-time alert notifications on dashboard
+
+### 📱 Device Management
+
+- Register and manage glucose monitoring devices
+- Device status tracking (Active/Inactive)
+- Device registration timestamps
+- Device removal capabilities
+
+### 👥 Emergency Contacts
+
+- Manage emergency contacts for critical alerts
+- Full CRUD operations (Create, Read, Update, Delete)
+- Contact cards with quick access to edit/delete
+- Contact information including name, phone, and email
+
+### 👤 User Profile
+
+- Personal information management
+- Profile photo upload
+- Account settings and preferences
+- Secure authentication system
+
+### 🔐 Authentication
+
+- Secure login and registration system
+- JWT token-based authentication
+- Protected routes with automatic redirects
+- Session management
+
+
+## Key Components
+
+### Generic Components
+
+- **GenericTable** - Reusable table component with sorting, actions, and loading states
+- **GenericFilters** - Configurable filter component supporting multiple field types
+- **LoadingSpinner** - Consistent loading indicators
+- **ProtectedRoute** - Route protection for authenticated users
+
+### Dashboard Components
+
+- **SummaryCard** - Glucose level display with status indicators
+- **RecentGlucoseRecords** - Latest readings with navigation to full history
+- **RecentAlerts** - Recent alert notifications with severity indicators
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 16.x or higher
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/glucova-frontend.git
+
+# Navigate to project directory
+cd glucova-frontend
+
+# Install dependencies
+npm install
+# or
+yarn install
+
+# Start development server
+npm run dev
+# or
+yarn dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The development server will start at `http://localhost:5173`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Environment Variables
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+Create a `.env` file in the root directory:
+
+```env
+VITE_API_URL=your_api_base_url
+```
+
+### Building for Production
+
+```bash
+npm run build
+# or
+yarn build
+```
+
+### Linting
+
+```bash
+npm run lint
+# or
+yarn lint
 ```
