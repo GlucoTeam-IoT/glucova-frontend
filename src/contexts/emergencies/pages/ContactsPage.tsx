@@ -3,14 +3,22 @@ import ContactCard from "../components/ContactCard";
 import LoadingSpinner from "../../../shared/components/LoadingSpinner";
 import { UserPlus } from "lucide-react";
 import type { Contact, NewContactData } from "../types/contact.types";
-import { addContact, getContacts } from "../services/contactService";
+import {
+  addContact,
+  getContacts,
+  updateContact,
+  deleteContact,
+} from "../services/contactService";
 import AddContactForm from "../components/AddContactForm";
+import DeleteContactModal from "../components/DeleteContactModal";
 import { motion } from "motion/react";
 
 const ContactsPage = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingContact, setEditingContact] = useState<Contact | null>(null);
+  const [contactToDelete, setContactToDelete] = useState<Contact | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,17 +44,72 @@ const ContactsPage = () => {
   const handleAddContact = async (contactData: NewContactData) => {
     try {
       setLoading(true);
-      const newContact = await addContact(contactData);
-      if (newContact) {
-        setContacts([...contacts, newContact]);
-        setShowForm(false);
+
+      if (editingContact) {
+        // Update existing contact
+        const updatedContact = await updateContact(
+          editingContact.id,
+          contactData
+        );
+        if (updatedContact) {
+          setContacts(
+            contacts.map((contact) =>
+              contact.id === editingContact.id ? updatedContact : contact
+            )
+          );
+          setShowForm(false);
+          setEditingContact(null);
+        }
+      } else {
+        // Add new contact
+        const newContact = await addContact(contactData);
+        if (newContact) {
+          setContacts([...contacts, newContact]);
+          setShowForm(false);
+        }
       }
     } catch (err) {
-      console.error("Failed to add contact", err);
-      setError("No se pudo agregar el contacto. Intente nuevamente más tarde.");
+      console.error("Failed to save contact", err);
+      setError("No se pudo guardar el contacto. Intente nuevamente más tarde.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleEditContact = (contact: Contact) => {
+    setEditingContact(contact);
+    setShowForm(true);
+  };
+
+  const handleDeleteContact = (contact: Contact) => {
+    setContactToDelete(contact);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!contactToDelete) return;
+
+    try {
+      setLoading(true);
+      const success = await deleteContact(contactToDelete.id);
+      if (success) {
+        setContacts(
+          contacts.filter((contact) => contact.id !== contactToDelete.id)
+        );
+        setContactToDelete(null);
+      }
+    } catch (err) {
+      console.error("Failed to delete contact", err);
+      setError(
+        "No se pudo eliminar el contacto. Intente nuevamente más tarde."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancelForm = () => {
+    setShowForm(false);
+    setEditingContact(null);
   };
 
   return (
@@ -85,7 +148,15 @@ const ContactsPage = () => {
       <AddContactForm
         isOpen={showForm}
         onSubmit={handleAddContact}
-        onCancel={() => setShowForm(false)}
+        onCancel={handleCancelForm}
+        editingContact={editingContact}
+      />
+
+      <DeleteContactModal
+        isOpen={contactToDelete !== null}
+        contact={contactToDelete}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setContactToDelete(null)}
       />
 
       {loading ? (
@@ -94,7 +165,12 @@ const ContactsPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {contacts.length > 0 ? (
             contacts.map((contact) => (
-              <ContactCard key={contact.id} contact={contact} />
+              <ContactCard
+                key={contact.id}
+                contact={contact}
+                onEdit={handleEditContact}
+                onDelete={handleDeleteContact}
+              />
             ))
           ) : (
             <div className="col-span-full p-8 bg-white rounded-md shadow text-center">

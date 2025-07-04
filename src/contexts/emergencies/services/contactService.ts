@@ -42,3 +42,26 @@ export const addContact = async (
     return null;
   }
 };
+
+export const updateContact = async (
+  contactId: string,
+  contactData: NewContactData
+): Promise<Contact | null> => {
+  try {
+    const response = await apiClient.put(`/contacts/${contactId}`, contactData);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating contact:", error);
+    return null;
+  }
+};
+
+export const deleteContact = async (contactId: string): Promise<boolean> => {
+  try {
+    await apiClient.delete(`/contacts/${contactId}`);
+    return true;
+  } catch (error) {
+    console.error("Error deleting contact:", error);
+    return false;
+  }
+};

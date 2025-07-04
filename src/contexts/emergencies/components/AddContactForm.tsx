@@ -1,19 +1,42 @@
 import { useState, useEffect, useRef } from "react";
-import type { NewContactData } from "../types/contact.types";
+import type { NewContactData, Contact } from "../types/contact.types";
 import { X } from "lucide-react";
 
 type Props = {
   onSubmit: (data: NewContactData) => void;
   onCancel: () => void;
   isOpen: boolean;
+  editingContact?: Contact | null;
 };
 
-const AddContactForm = ({ onSubmit, onCancel, isOpen }: Props) => {
+const AddContactForm = ({
+  onSubmit,
+  onCancel,
+  isOpen,
+  editingContact,
+}: Props) => {
   const [formData, setFormData] = useState<NewContactData>({
     name: "",
     email: "",
     phone: "",
   });
+
+  // Update form data when editing contact changes
+  useEffect(() => {
+    if (editingContact) {
+      setFormData({
+        name: editingContact.name,
+        email: editingContact.email,
+        phone: editingContact.phone,
+      });
+    } else {
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+      });
+    }
+  }, [editingContact]);
 
   const [errors, setErrors] = useState({
     name: "",
@@ -101,7 +124,9 @@ const AddContactForm = ({ onSubmit, onCancel, isOpen }: Props) => {
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-800">
-            Agregar contacto de emergencia
+            {editingContact
+              ? "Editar contacto de emergencia"
+              : "Agregar contacto de emergencia"}
           </h2>
           <button
             onClick={onCancel}
@@ -190,7 +215,7 @@ const AddContactForm = ({ onSubmit, onCancel, isOpen }: Props) => {
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
             >
-              Guardar contacto
+              {editingContact ? "Actualizar contacto" : "Guardar contacto"}
             </button>
           </div>
         </form>
