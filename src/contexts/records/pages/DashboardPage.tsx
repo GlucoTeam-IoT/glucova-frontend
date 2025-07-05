@@ -38,14 +38,14 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="space-y-6 overflow-hidden">
+    <motion.div
+      className="space-y-6"
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       {/* Header */}
-      <motion.div
-        className="flex justify-between items-center"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      >
+      <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
         <div className="flex items-center space-x-2">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -53,45 +53,30 @@ const DashboardPage = () => {
             Actualización automática cada 30s
           </span>
         </div>
-      </motion.div>
+      </div>
 
       {/* Main Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column - Glucose Card */}
-        <motion.div
-          className="lg:col-span-1"
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-        >
+        <div className="lg:col-span-1">
           {data.vitals.map((vital) => (
             <div key={vital.label} className="h-full">
               <SummaryCard vital={vital} />
             </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Right Column - Recent Records */}
-        <motion.div
-          className="lg:col-span-2"
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
-        >
+        <div className="lg:col-span-2">
           <RecentGlucoseRecords records={data.recentGlucoseRecords || []} />
-        </motion.div>
+        </div>
       </div>
 
       {/* Bottom Section - Alerts */}
-      <motion.div
-        className="w-full"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
-      >
+      <div className="w-full">
         <RecentAlerts alerts={data.alerts} />
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 };
 
