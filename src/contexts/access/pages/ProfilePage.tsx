@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import ProfileForm from "../components/ProfileForm";
-import { logout } from "../services/authService";
 import { getProfile, updateProfile } from "../services/profileService";
+import { useAuth } from "../AuthContext";
 import LoadingSpinner from "../../../shared/components/LoadingSpinner";
 import { motion } from "motion/react";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const { handleLogout } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -88,18 +89,12 @@ const ProfilePage = () => {
       //   }));
       // }
 
-      alert("Profile updated successfully");
     } catch (err) {
       console.error("Error updating profile:", err);
       alert("Can't update profile");
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true });
   };
 
   return (
