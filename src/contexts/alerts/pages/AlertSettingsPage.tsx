@@ -207,20 +207,20 @@ const AlertSettingsPage = () => {
       ),
     },
     {
-      key: "timestamp",
+      key: "date",
       label: "Fecha",
-      render: (timestamp: string) => {
-        if (!timestamp) return "N/A";
-        const date = new Date(timestamp);
+      render: (_, item: Alert) => {
+        if (!item.timestamp) return "N/A";
+        const date = new Date(item.timestamp);
         return date.toLocaleDateString();
       },
     },
     {
-      key: "timestamp",
+      key: "time",
       label: "Hora",
-      render: (timestamp: string) => {
-        if (!timestamp) return "N/A";
-        const date = new Date(timestamp);
+      render: (_, item: Alert) => {
+        if (!item.timestamp) return "N/A";
+        const date = new Date(item.timestamp);
         return date.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",

@@ -80,18 +80,18 @@ const HealthHistoryPage = () => {
   // Configure table columns
   const tableColumns: TableColumn<HealthRecord>[] = [
     {
-      key: "timestamp",
+      key: "date",
       label: "Fecha",
-      render: (timestamp: string) => {
-        const date = new Date(timestamp);
+      render: (_, item: HealthRecord) => {
+        const date = new Date(item.timestamp);
         return date.toLocaleDateString();
       },
     },
     {
-      key: "timestamp",
+      key: "time",
       label: "Hora",
-      render: (timestamp: string) => {
-        const date = new Date(timestamp);
+      render: (_, item: HealthRecord) => {
+        const date = new Date(item.timestamp);
         return date.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",

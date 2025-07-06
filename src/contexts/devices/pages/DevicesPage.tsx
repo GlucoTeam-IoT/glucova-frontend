@@ -97,18 +97,18 @@ const DevicesPage = () => {
       render: (id: string) => <span className="font-medium">{id}</span>,
     },
     {
-      key: "timestamp",
+      key: "date",
       label: "Fecha de Registro",
-      render: (timestamp: string) => {
-        const date = new Date(timestamp);
+      render: (_, item: Device) => {
+        const date = new Date(item.timestamp);
         return date.toLocaleDateString();
       },
     },
     {
-      key: "timestamp",
+      key: "time",
       label: "Hora",
-      render: (timestamp: string) => {
-        const date = new Date(timestamp);
+      render: (_, item: Device) => {
+        const date = new Date(item.timestamp);
         return date.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
