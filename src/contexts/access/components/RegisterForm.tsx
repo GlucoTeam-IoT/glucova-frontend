@@ -32,11 +32,11 @@ export const RegisterForm = () => {
     setError(null);
 
     if (form.password !== form.confirmPassword) {
-      return setError("Passwords do not match.");
+      return setError("Las contraseñas no coinciden.");
     }
 
     if (!form.agreeTerms) {
-      return setError("You must accept the terms and conditions.");
+      return setError("Debes aceptar los términos y condiciones.");
     }
 
     setLoading(true);
