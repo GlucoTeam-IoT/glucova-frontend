@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import { type VitalSign } from "../types/dashboard.types";
 import { Droplet, HeartPulse, Weight, BarChart3, Clock } from "lucide-react";
+import { getGlucoseRangeColors } from "../../../shared/utils/colorUtils";
 
 type SummaryCardProps = {
   vital: VitalSign;
@@ -33,22 +34,15 @@ const SummaryCard = ({ vital }: SummaryCardProps) => {
     const level = parseInt(value);
     if (isNaN(level)) return { status: "", color: "" };
 
-    if (level < 70)
-      return {
-        status: "Bajo",
-        color: "text-blue-600 bg-blue-50 border-blue-200",
-      };
-    if (level >= 70 && level <= 100)
-      return {
-        status: "Normal",
-        color: "text-green-600 bg-green-50 border-green-200",
-      };
-    if (level > 100 && level <= 125)
-      return {
-        status: "Elevado",
-        color: "text-yellow-600 bg-yellow-50 border-yellow-200",
-      };
-    return { status: "Alto", color: "text-red-600 bg-red-50 border-red-200" };
+    const colors = getGlucoseRangeColors(level);
+    // Convert background colors to lighter versions for the card
+    const lightBg = colors.background.replace('bg-', 'bg-').replace('-100', '-50');
+    const borderColor = colors.text.replace('text-', 'border-').replace('-600', '-200').replace('-700', '-200');
+    
+    return {
+      status: colors.label,
+      color: `${colors.text} ${lightBg} ${borderColor}`,
+    };
   };
 
   const glucoseInfo =

@@ -9,6 +9,7 @@ import type { FilterField } from "../../../shared/components/GenericFilters";
 import type { TableColumn } from "../../../shared/components/GenericTable";
 import { Activity } from "lucide-react";
 import { motion } from "motion/react";
+import { getGlucoseRangeColors } from "../../../shared/utils/colorUtils";
 
 const HealthHistoryPage = () => {
   const [, setRecords] = useState<HealthRecord[]>([]);
@@ -113,23 +114,18 @@ const HealthHistoryPage = () => {
       key: "level",
       label: "Nivel de Glucosa",
       render: (level: number) => {
-        let levelClass = "";
-
-        if (level < 70) {
-          levelClass = "text-blue-600 bg-blue-100"; // Low
-        } else if (level >= 70 && level <= 100) {
-          levelClass = "text-green-600 bg-green-100"; // Normal
-        } else if (level > 100 && level <= 125) {
-          levelClass = "text-yellow-600 bg-yellow-100"; // Pre-diabetic/Elevated
-        } else if (level > 125) {
-          levelClass = "text-red-600 bg-red-100"; // High
-        } else {
-          levelClass = "text-gray-600 bg-gray-100"; // Unknown
+        if (!level) {
+          return (
+            <span className="px-3 py-1 rounded-full text-sm font-medium text-gray-600 bg-gray-100">
+              N/A
+            </span>
+          );
         }
 
+        const colors = getGlucoseRangeColors(level);
         return (
           <span
-            className={`px-3 py-1 rounded-full text-sm font-medium ${levelClass}`}
+            className={`px-3 py-1 rounded-full text-sm font-medium ${colors.text} ${colors.background}`}
           >
             {level} mg/dL
           </span>

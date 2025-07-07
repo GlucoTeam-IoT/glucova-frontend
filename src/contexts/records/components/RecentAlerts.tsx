@@ -1,35 +1,28 @@
-import type { Alert } from "../types/dashboard.types";
+import type { Alert } from "../../alerts/types/alertSettings.types";
 import { Bell, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getAlertLevelColors } from "../../../shared/utils/colorUtils";
 
 interface Props {
   alerts: Alert[];
 }
 
 const RecentAlerts = ({ alerts }: Props) => {
-  const getAlertColor = (type: string): string => {
-    switch (type) {
-      case "error":
-        return "text-red-600 bg-red-100 border-red-200";
-      case "warning":
-        return "text-yellow-600 bg-yellow-100 border-yellow-200";
-      case "info":
-        return "text-blue-600 bg-blue-100 border-blue-200";
-      default:
-        return "text-gray-600 bg-gray-100 border-gray-200";
-    }
-  };
+  const formatRelativeTime = (timestamp?: string): string => {
+    if (!timestamp) return "Fecha desconocida";
 
-  const getAlertTypeText = (type: string): string => {
-    switch (type) {
-      case "error":
-        return "Crítica";
-      case "warning":
-        return "Advertencia";
-      case "info":
-        return "Información";
-      default:
-        return "Alerta";
+    const now = new Date();
+    const alertTime = new Date(timestamp);
+    const diffMs = now.getTime() - alertTime.getTime();
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+
+    if (diffHours > 0) {
+      return `Hace ${diffHours} hora${diffHours > 1 ? "s" : ""}`;
+    } else if (diffMinutes > 0) {
+      return `Hace ${diffMinutes} minuto${diffMinutes > 1 ? "s" : ""}`;
+    } else {
+      return "Hace unos momentos";
     }
   };
 
@@ -72,16 +65,21 @@ const RecentAlerts = ({ alerts }: Props) => {
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-gray-500 mt-1">{alert.time}</p>
+                <p className="text-sm text-gray-500 mt-1">
+                  {formatRelativeTime(alert.timestamp)}
+                </p>
               </div>
               <div className="ml-4 text-right">
-                <span
-                  className={`px-3 py-1 rounded-lg text-sm font-semibold border ${getAlertColor(
-                    alert.type
-                  )}`}
-                >
-                  {getAlertTypeText(alert.type)}
-                </span>
+                {(() => {
+                  const colors = getAlertLevelColors(alert.level);
+                  return (
+                    <span
+                      className={`px-3 py-1 rounded-lg text-sm font-semibold border border-gray-200 ${colors.text} ${colors.background}`}
+                    >
+                      {colors.label}
+                    </span>
+                  );
+                })()}
               </div>
             </div>
           ))

@@ -1,6 +1,7 @@
 import type { HealthRecord } from "../types/healthHistory.types";
 import { Activity, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getGlucoseRangeColors } from "../../../shared/utils/colorUtils";
 
 type Props = {
   records: HealthRecord[];
@@ -15,22 +16,6 @@ const RecentGlucoseRecords = ({ records }: Props) => {
       hour: "2-digit",
       minute: "2-digit",
     });
-  };
-
-  const getGlucoseColor = (level: number): string => {
-    if (level < 70) return "text-blue-600 bg-blue-100 border-blue-200";
-    if (level >= 70 && level <= 100)
-      return "text-green-600 bg-green-100 border-green-200";
-    if (level > 100 && level <= 125)
-      return "text-yellow-600 bg-yellow-100 border-yellow-200";
-    return "text-red-600 bg-red-100 border-red-200";
-  };
-
-  const getGlucoseStatus = (level: number): string => {
-    if (level < 70) return "Bajo";
-    if (level >= 70 && level <= 100) return "Normal";
-    if (level > 100 && level <= 125) return "Elevado";
-    return "Alto";
   };
 
   return (
@@ -77,16 +62,21 @@ const RecentGlucoseRecords = ({ records }: Props) => {
                 </p>
               </div>
               <div className="ml-4 text-right">
-                <span
-                  className={`px-3 py-1 rounded-lg text-sm font-semibold border ${getGlucoseColor(
-                    record.level
-                  )}`}
-                >
-                  {record.level} mg/dL
-                </span>
-                <p className="text-xs text-gray-500 mt-1">
-                  {getGlucoseStatus(record.level)}
-                </p>
+                {(() => {
+                  const colors = getGlucoseRangeColors(record.level);
+                  return (
+                    <>
+                      <span
+                        className={`px-3 py-1 rounded-lg text-sm font-semibold border border-gray-200 ${colors.text} ${colors.background}`}
+                      >
+                        {record.level} mg/dL
+                      </span>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {colors.label}
+                      </p>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           ))

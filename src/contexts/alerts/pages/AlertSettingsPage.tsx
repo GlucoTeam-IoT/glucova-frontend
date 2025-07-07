@@ -19,10 +19,11 @@ import type {
   TableColumn,
   TableAction,
 } from "../../../shared/components/GenericTable";
-import { Plus, Bell, Trash2 } from "lucide-react";
+import { Bell, Trash2 } from "lucide-react";
 import { getDevices } from "../../devices/services/devicesService";
 import type { Device } from "../../devices/types/devices.types";
 import { motion } from "motion/react";
+import { getAlertLevelColors } from "../../../shared/utils/colorUtils";
 
 const AlertSettingsPage = () => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
@@ -161,36 +162,12 @@ const AlertSettingsPage = () => {
       key: "level",
       label: "Nivel",
       render: (level: string) => {
-        let levelClass = "";
-        let levelText = "";
-
-        switch (level.toLowerCase()) {
-          case "low":
-            levelText = "Bajo";
-            levelClass = "text-blue-600 bg-blue-100";
-            break;
-          case "medium":
-            levelText = "Medio";
-            levelClass = "text-yellow-600 bg-yellow-100";
-            break;
-          case "high":
-            levelText = "Alto";
-            levelClass = "text-red-600 bg-red-100";
-            break;
-          case "critical":
-            levelText = "Crítico";
-            levelClass = "text-red-700 bg-red-200";
-            break;
-          default:
-            levelText = level.charAt(0).toUpperCase() + level.slice(1);
-            levelClass = "text-gray-600 bg-gray-100";
-        }
-
+        const colors = getAlertLevelColors(level as any);
         return (
           <span
-            className={`px-3 py-1 rounded-full text-sm font-medium ${levelClass}`}
+            className={`px-3 py-1 rounded-full text-sm font-medium ${colors.text} ${colors.background}`}
           >
-            {levelText}
+            {colors.label}
           </span>
         );
       },
@@ -251,13 +228,13 @@ const AlertSettingsPage = () => {
           <p className="text-gray-600">Administra tus alertas de monitoreo</p>
         </div>
 
-        <button
+        {/* <button
           onClick={() => setShowCreateModal(true)}
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
         >
           <Plus className="w-4 h-4" />
           Crear alerta
-        </button>
+        </button> */}
       </div>
 
       {error && (
